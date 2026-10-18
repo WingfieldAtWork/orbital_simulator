@@ -1,0 +1,27 @@
+## State Vectors
+The satellite's orbit is determined by two state vectors:
+- Position vector r = [x, y, z]
+- Velocity vector v = dr/dt
+
+Newton's laws define that the acceleration must be -GM/r^2 where r is the radius of the Earth.
+Calculations are done with respect to the ECI (Earth-centered inertial) which defines the origin as the Earth's center of mass.
+To calculate, begin with an initial state:
+- r_0 = [x_0, y_0, z_0]
+Then, to step forward, perform a numerical integration (4th-order Runge-Kutta but this uses Euler):
+- r(t + delta_t) = r(t) + v(t)*delta_t
+- v(t + delta_t) = v(t) + a(t)*delta_t
+- a = -GM * r / r_magnitude^3
+    - r_magnitude = sqrt(x^2 + y^2 + z^2)
+    - G = 6.6743*10^-11 m^3/(kg*s^2)
+    - M = 5.9722*10^24 kg
+    - mu or GM = 3.98600 * 10^14 m^3/s^2
+
+The calculation loop follows as:
+- Given initial r and v at t = 0, find the magnitude of r_0
+- Calculate the scalar strength of gravity, g_strength = mu/r_0_magnitude
+- Find initial acceleration, a_0 = g_strength * r_0
+- Now, numerically integrate to calculate the next step:
+    - delta_t = 10
+    - r_1 = r_0 + v_0*delta_t
+    - v_1 = v_0 + a_0*delta_t
+- Generalized, you repeat this using each previous step
