@@ -377,7 +377,7 @@ def plot_orbit_and_residuals(
             bbox=dict(boxstyle="round,pad=0.5", facecolor="#fff3cd", edgecolor="#ffeeba"),
         )
 
-    plt.suptitle("Orbital Simulator Telemetry & SIL Mission Dashboard", fontsize=14, weight="bold")
+    plt.suptitle("Orbital Simulator Telemetry", fontsize=14, weight="bold")
     plt.tight_layout()
 
     if save_path:
