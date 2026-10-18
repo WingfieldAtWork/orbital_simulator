@@ -7,18 +7,11 @@ A modular, Software-in-the-Loop (SIL) orbital dynamics simulator and state estim
 ## Visual Output
 
 ![Orbital Trajectory and Filter Estimation](sample_plot_default.png)
-*Figure 1: 3D orbit trajectory around WGS-84 reference Earth and corresponding EKF estimation residuals bounded by $\pm 3\sigma$ covariance limits.*
+*Figure 1: 3D orbit trajectory around WGS-84 reference Earth and corresponding EKF estimation residuals bounded by covariance limits.*
 
 ---
 
 ## Architecture Overview
-
-The idea is:
-[ Dynamics Engine (RK4) ] ──(True State @ 50 Hz)──> [ Sensor Rig (GPS Emulation) ]
-│
-▼
-[ EKF Estimator ] ──> [ State Estimate & Covariance ]
-
 * **Basic Physics (`dynamics.py`):** Deterministic 4th-order Runge-Kutta (RK4) numerical integrator solving orbital equations of motion with $J_2$ geopotential perturbations.
 * **Sensor Emulation (`sensors.py`):** Simulates hardware-level sampling rates and zero-mean Gaussian measurement noise $\mathcal{N}(0, R)$, injecting realistic clock and atmospheric jitter.
 * **Flight Software Estimator (`estimator.py`):** Extended Kalman Filter decoupled from the truth model. Propagates state covariance during high-rate physics steps and executes measurement updates upon telemetry arrival.
@@ -30,15 +23,14 @@ The idea is:
 
 ```text
 orbital_sim/
-├── config.py          # Physical constants (WGS-84), orbital initial states, simulation parameters
-├── dynamics.py        # Truth engine: equations of motion and RK4 integrator
-├── sensors.py         # Hardware emulation: multi-rate polling and measurement noise injection
-├── estimator.py       # Flight software: EKF prediction, update, and covariance tracking
-├── visualizer.py      # Telemetry diagnostics: 3D Earth mesh and residual error plots
-├── run_sim.py         # Simulation coordinator and event loop
-├── docs/              # Figures and design documentation
-│   └── sample_plot.png
-└── requirements.txt   # Runtime dependencies
+├── config.py                # Physical constants (WGS-84), orbital initial states, simulation parameters
+├── dynamics.py              # Equations of motion and RK4 integrator
+├── sensors.py               # Hardware emulation with multi-rate polling and measurement noise injection
+├── estimator.py             # Flight software with EKF prediction, update, and covariance tracking
+├── visualizer.py            # Telemetry diagnostics with 3D Earth mesh and residual error plots
+├── run_sim.py               # Simulation coordinator and event loop
+├── sample_plot_default.png  # Sample figure showing default plot output
+└── requirements.txt         # Runtime dependencies
 ```
 
 ---
